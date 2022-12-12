@@ -1,8 +1,8 @@
+#include "queue.h"
+
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "queue.h"
 
 struct queue *queue_init(void)
 {
@@ -78,4 +78,3 @@ void queue_pop(struct queue *queue)
         queue->size -= 1;
     }
 }
-

@@ -5,10 +5,12 @@
 
 #include "queue.h"
 
+int INFINITY = 10000000;
+
 struct map
 {
     char **arr;
-    char **visited;
+    int **visited;
     int **sol;
     int nb_steps;
     int width;
@@ -37,8 +39,8 @@ struct map *init_map(int width, int height)
     {
         for (int j = 0; j < m->width; j++)
         {
-            m->visited[i][j] = '.';
-            m->sol[i][j] = 0;
+            m->visited[i][j] = 0;
+            m->sol[i][j] = INFINITY;
             m->arr[i][j] = '.';
         }
     }
@@ -46,7 +48,7 @@ struct map *init_map(int width, int height)
     return m;
 }
 
-void add_to_map(char *line, struct map *map, size_t *curr, struct pos *s,
+void add_to_map(char *line, struct map *map, int *curr, struct pos *s,
                 struct pos *e)
 {
     for (int i = 0; line[i] != '\n'; i++)
@@ -66,7 +68,7 @@ void add_to_map(char *line, struct map *map, size_t *curr, struct pos *s,
     *curr += 1;
 }
 
-void print_map(char **map,int width, int height) 
+void print_map(char **map, int width, int height)
 {
     for (int i = 0; i < height; i++)
     {
@@ -90,6 +92,7 @@ void print_sol(int **map, int width, int height)
         }
         printf("\n");
     }
+    printf("\n");
 }
 
 void free_matrix(struct map *map)
@@ -114,104 +117,143 @@ int is_reachable(struct map *map, int x, int y, struct pos *prev)
     if (x < 0 || y < 0 || x >= map->height || y >= map->width)
         return 0;
     char c = map->arr[x][y];
-    if (c == 'S')
-        return 1;
-    return prev->elev == 'S' ||
-        (prev->elev == 'z' && c == 'E') ||
-        (c <= prev->elev + 1 && c >= prev->elev - 1 && c != '-');
+    // if (c == 'S')
+    //   return 1;
+    return map->visited[x][y] == 0
+        && (prev->elev == 'S'
+            || ((prev->elev == 'y' || prev->elev == 'z') && c == 'E')
+            || (c <= prev->elev + 1 && c >= 'a')); //&& c != '-');
 }
 
-int solve(struct map *map, struct pos *s)
+struct pos *create_pos(int x, int y, int elev, int dist)
 {
-    struct queue *queue = queue_init();
-    struct pos *s_copy = calloc(1, sizeof(struct queue));
-    s_copy->x = s->x;
-    s_copy->y = s->y;
-    s_copy->elev = s->elev;
-    s_copy->dist = s->dist;
-    queue_push(queue, s_copy);
-    map->arr[s->x][s->y] = '-';
+    struct pos *p = calloc(1, sizeof(struct pos));
+    p->x = x;
+    p->y = y;
+    p->dist = dist;
+    p->elev = elev;
+    return p;
+}
 
-    while (queue_size(queue) != 0)
+int nodes_to_visit(struct map *map)
+{
+    for (int i = 0; i < map->height; i++)
     {
-        struct pos *p = queue_head(queue);
-        if (!p)
+        for (int j = 0; j < map->width; j++)
         {
-            queue_pop(queue);
-            continue;
+            if (map->visited[i][j] != 1)
+                return 1;
         }
-
-        if (map->arr[p->x][p->y] == 'E')
-        {
-            int dist = p->dist;
-            queue_destroy(queue);
-            return dist;
-        }
-
-        struct pos prev = *p;
-        if (is_reachable(map, p->x + 1, p->y, &prev))
-        {
-            struct pos *q = calloc(1, sizeof(struct queue));
-            q->x = p->x + 1;
-            q->y = p->y;
-            q->dist = p->dist + 1;
-            q->elev = map->arr[q->x][q->y];
-            queue_push(queue, q);
-            printf("LETTER: %c, p.x = %d, p.y = %d, p.dist = %d\n",map->arr[q->x][q->y], q->x, q->y, q->dist);
-            print_map(map->arr, map->width, map->height);
-            printf("\n");
-            map->arr[q->x][q->y] = '-';
-        }
-
-        if (is_reachable(map, p->x - 1, p->y, &prev))
-        {
-            struct pos *q = calloc(1, sizeof(struct queue));
-            q->x = p->x - 1;
-            q->y = p->y;
-            q->dist = p->dist + 1;
-            q->elev = map->arr[q->x][q->y];
-            queue_push(queue, q);
-            printf("LETTER: %c, p.x = %d, p.y = %d, p.dist = %d\n",map->arr[q->x][q->y], q->x, q->y, q->dist);
-            print_map(map->arr, map->width, map->height);
-            printf("\n");
-            map->arr[q->x][q->y] = '-';
-        }
-
-        if (is_reachable(map, p->x, p->y + 1, &prev))
-        {
-            struct pos *q = calloc(1, sizeof(struct queue));
-            q->x = p->x;
-            q->y = p->y + 1;
-            q->dist = p->dist + 1;
-            q->elev = map->arr[q->x][q->y];
-            queue_push(queue, q);
-            printf("LETTER: %c, p.x = %d, p.y = %d, p.dist = %d\n",map->arr[q->x][q->y], q->x, q->y, q->dist);
-            print_map(map->arr, map->width, map->height);
-            printf("\n");
-            map->arr[q->x][q->y] = '-';
-        }
-
-        if (is_reachable(map, p->x, p->y - 1, &prev))
-        {
-            struct pos *q = calloc(1, sizeof(struct queue));
-            q->x = p->x;
-            q->y = p->y - 1;;
-            q->dist = p->dist + 1;
-            q->elev = map->arr[q->x][q->y];
-            queue_push(queue, q);
-
-            printf("LETTER: %c, p.x = %d, p.y = %d, p.dist = %d\n",map->arr[q->x][q->y], q->x, q->y, q->dist);
-            print_map(map->arr, map->width, map->height);
-            printf("\n");
-
-        map->arr[q->x][q->y] = '-';
-        }
-
-        queue_pop(queue);
-
     }
-    queue_destroy(queue);
-    return -1;
+    return 0;
+}
+
+struct pos *get_lowest_node(struct map *map)
+{
+    struct pos *temp = calloc(1, sizeof(struct pos));
+    temp->x = 0;
+    temp->y = 0;
+    temp->dist = INFINITY;
+    temp->elev = 'a';
+    for (int i = 0; i < map->height; i++)
+    {
+        for (int j = 0; j < map->width; j++)
+        {
+            if (map->sol[i][j] < temp->dist && map->visited[i][j] != 1)
+            {
+                temp->x = i;
+                temp->y = j;
+                temp->dist = map->sol[i][j];
+                temp->elev = map->arr[i][j];
+            }
+        }
+    }
+    if (temp->x == 0 && temp->y == 0 && map->visited[0][0] == 1)
+    {
+        free(temp);
+        return NULL;
+    }
+    return temp;
+}
+
+void solve(struct map *map, struct pos *s)
+{
+    map->sol[s->x][s->y] = 0; // distance from src to src is 0
+
+    while (nodes_to_visit(map))
+    {
+        struct pos *low = get_lowest_node(map);
+        if (!low)
+        {
+            // printf("got stuck\n");
+            return;
+        }
+
+        // printf("x: %i y: %i\n", low->x, low->y);
+        if (map->arr[low->x][low->y] == 'E')
+        {
+            free(low);
+            return;
+        }
+
+        map->visited[low->x][low->y] = 1;
+
+        struct pos prev = *low;
+
+        if (is_reachable(map, low->x + 1, low->y, &prev))
+        {
+            if (map->sol[low->x + 1][low->y] > low->dist + 1)
+                map->sol[low->x + 1][low->y] = low->dist + 1;
+        }
+        if (is_reachable(map, low->x - 1, low->y, &prev))
+        {
+            if (map->sol[low->x - 1][low->y] > low->dist + 1)
+                map->sol[low->x - 1][low->y] = low->dist + 1;
+        }
+        if (is_reachable(map, low->x, low->y + 1, &prev))
+        {
+            if (map->sol[low->x][low->y + 1] > low->dist + 1)
+                map->sol[low->x][low->y + 1] = low->dist + 1;
+        }
+        if (is_reachable(map, low->x, low->y - 1, &prev))
+        {
+            if (map->sol[low->x][low->y - 1] > low->dist + 1)
+                map->sol[low->x][low->y - 1] = low->dist + 1;
+        }
+        free(low);
+
+        // print_sol(map->visited, map->width, map->height);
+        // printf("\n");
+    }
+}
+
+void print_final_map(struct map *map)
+{
+    for (int i = 0; i < map->height; i++)
+    {
+        printf("%02d", i);
+        for (int j = 0; j < map->width; j++)
+        {
+            if (map->visited[i][j] == 1
+                && (map->arr[i][j] != 'S' || map->arr[i][j] != 'E'))
+                printf(".");
+            else
+                printf("%c", map->arr[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void reinit_map(struct map *map)
+{
+    for (int i = 0; i < map->height; i++)
+    {
+        for (int j = 0; j < map->width; j++)
+        {
+            map->visited[i][j] = 0;
+            map->sol[i][j] = INFINITY;
+        }
+    }
 }
 
 int main(int argc, char *argv[])
@@ -227,10 +269,19 @@ int main(int argc, char *argv[])
     size_t len = 0;
     char *line = NULL;
 
-    struct map *map = init_map(159, 41);
+    int width = 159;
+    int height = 41;
 
-    struct pos s = {0, 0, 0, 0};
-    struct pos e = {0, 0, 0, 0};
+    if (strcmp(argv[1], "test.txt") == 0)
+    {
+        width = 8;
+        height = 5;
+    }
+
+    struct map *map = init_map(width, height);
+
+    struct pos s = { 0, 0, 0, 0 };
+    struct pos e = { 0, 0, 0, 0 };
 
     int curr = 0;
 
@@ -239,21 +290,66 @@ int main(int argc, char *argv[])
         add_to_map(line, map, &curr, &s, &e);
     }
 
-    //print_map(map->arr, map->width);
+    // print_map(map->arr, map->width);
 
     s.elev = 'a';
 
-    map->sol[e.x][e.y] = 4;
-    int res = solve(map, &s);
+    // map->sol[e.x][e.y] = 4;
+    solve(map, &s);
 
     printf("\n");
 
-   // print_map(map->arr, map->width, map->height);
+    map->arr[s.x][s.y] = 'S';
+    print_final_map(map);
 
-    //print_map(map->visited, map->width);
+    // print_map(map->visited, map->width);
 
-    printf("nb steps: %i\n", res);
+    // printf("nb steps: %i\n", res);
 
+    printf("Part 1: nb steps: %i\n", map->sol[e.x][e.y]);
+
+    reinit_map(map);
+    int size = 6;
+    int *arr = calloc(size, sizeof(int));
+    curr = 0;
+
+    for (int i = 0; i < map->height; i++)
+    {
+        for (int j = 0; j < map->width; j++)
+        {
+            if (map->arr[i][j] == 'a')
+            {
+                s.x = i;
+                s.y = j;
+                s.dist = 0;
+                s.elev = 'a';
+                solve(map, &s);
+
+                if (curr >= size)
+                {
+                    size *= 2;
+                    arr = realloc(arr, size * sizeof(int));
+                }
+
+                arr[curr] = map->sol[e.x][e.y];
+                curr += 1;
+
+                reinit_map(map);
+            }
+        }
+    }
+
+    int min = arr[0];
+
+    for (int i = 0; i < curr; i++)
+    {
+        if (arr[i] < min)
+            min = arr[i];
+    }
+
+    printf("part 2: %d\n", min);
+
+    free(arr);
     free(line);
     fclose(f);
     free_matrix(map);
