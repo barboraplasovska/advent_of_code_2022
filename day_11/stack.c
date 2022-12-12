@@ -1,8 +1,8 @@
 #include "stack.h"
 
 #include <stddef.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 struct stack *stack_push(struct stack *s, long c)
 {

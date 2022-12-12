@@ -5,7 +5,7 @@
 
 #include "monkey.h"
 
-void parse_starting_items(struct monkey *m, char* line)
+void parse_starting_items(struct monkey *m, char *line)
 {
     size_t i = 18;
     size_t start = 18;
@@ -101,19 +101,19 @@ void monkey_round(struct monkey **monkeys, size_t count)
             long item = stack_peak(m->items);
             m->items = stack_pop(m->items);
             item = apply_worry_level(m, item);
-            //item /= 3;
+            // item /= 3;
             item %= (long)(2 * 7 * 13 * 3 * 19 * 5 * 17 * 11);
             if (item % m->test_nb == (long)0)
             {
                 monkey_add_item(monkeys[m->test_true], item);
-                //if (m->test_true == 2)
-                  //  printf("%lu\n", i);
+                // if (m->test_true == 2)
+                //   printf("%lu\n", i);
             }
             else
             {
                 monkey_add_item(monkeys[m->test_false], item);
-                //if (m->test_false == 2)
-                  //  printf("%lu\n", i);
+                // if (m->test_false == 2)
+                //   printf("%lu\n", i);
             }
         }
     }
@@ -168,14 +168,16 @@ int main(int argc, char *argv[])
         {
             printf("\n== After round %lu ==\n", i + 1);
             for (size_t i = 0; i < count; i++)
-                printf("Monkey %lu inspected items %lu times\n", i, m[i]->inspected);
+                printf("Monkey %lu inspected items %lu times\n", i,
+                       m[i]->inspected);
         }
     }
 
-/*    printf("\n\n");
-    for (size_t i = 0; i < count; i++)
-        printf("Monkey %lu inspected items %lu times\n", i, m[i]->inspected);
-*/
+    /*    printf("\n\n");
+        for (size_t i = 0; i < count; i++)
+            printf("Monkey %lu inspected items %lu times\n", i,
+       m[i]->inspected);
+    */
 
     size_t max = 0;
     for (size_t i = 0; i < count; i++)
@@ -189,7 +191,7 @@ int main(int argc, char *argv[])
 
     printf("\nres = %lu\n", max * second);
 
-    //monkey_print(m, count);
+    // monkey_print(m, count);
 
     for (size_t i = 0; i < count; i++)
         monkey_destroy(m[i]);

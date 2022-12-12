@@ -46,8 +46,8 @@ struct map *init_map(int width, int height)
     return m;
 }
 
-void add_to_map(char *line, struct map *map, int *curr,
-        struct pos *s, struct pos *e)
+void add_to_map(char *line, struct map *map, size_t *curr, struct pos *s,
+                struct pos *e)
 {
     for (int i = 0; line[i] != '\n'; i++)
     {
@@ -213,7 +213,6 @@ int solve(struct map *map, struct pos *s)
     queue_destroy(queue);
     return -1;
 }
-
 
 int main(int argc, char *argv[])
 {

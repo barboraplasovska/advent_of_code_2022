@@ -1,8 +1,8 @@
+#include "monkey.h"
+
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "monkey.h"
 
 struct monkey *monkey_init(void)
 {
@@ -39,7 +39,7 @@ void monkey_print(struct monkey **monkeys, size_t count)
             continue;
         printf("Monkey %lu:\n", i);
         printf("  Starting items: ");
-        for (struct stack *p = m->items; p ; p = p->next)
+        for (struct stack *p = m->items; p; p = p->next)
         {
             printf("%lu", p->data);
             if (p->next)
@@ -67,7 +67,7 @@ void monkey_print_round(struct monkey **monkeys, size_t count)
     {
         struct monkey *m = monkeys[i];
         printf("Monkey %lu: ", i);
-        for (struct stack *p = m->items; p ; p = p->next)
+        for (struct stack *p = m->items; p; p = p->next)
         {
             printf("%lu", p->data);
             if (p->next)

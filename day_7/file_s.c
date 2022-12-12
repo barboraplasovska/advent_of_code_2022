@@ -1,8 +1,8 @@
 #include "file_s.h"
 
 #include <stddef.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 struct file_s *file_s_init(char *name, enum file_type type)
 {
@@ -18,8 +18,8 @@ struct file_s *file_s_init(char *name, enum file_type type)
     return f;
 }
 
-void file_s_add_child(struct file_s *f, enum file_type type,
-        char *name, size_t size)
+void file_s_add_child(struct file_s *f, enum file_type type, char *name,
+                      size_t size)
 {
     if (!f)
         return;
@@ -52,8 +52,8 @@ void file_s_add_child(struct file_s *f, enum file_type type,
     new->parent = p->parent;
 }
 
-void file_s_add_sibling(struct file_s *f, enum file_type type,
-        char *name, size_t size)
+void file_s_add_sibling(struct file_s *f, enum file_type type, char *name,
+                        size_t size)
 {
     if (!f)
         return;
@@ -113,8 +113,7 @@ void file_s_print(int prefix, struct file_s *f)
         else
             printf("- %s (DIR, size=%lu) \n", f->name, f->size);
 
-        file_s_print(prefix+1, f->child);
+        file_s_print(prefix + 1, f->child);
         f = f->next;
     }
 }
-

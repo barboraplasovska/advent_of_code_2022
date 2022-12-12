@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-void update_cycles(char *ctr, size_t *cycles, size_t *curr, size_t *capacity, size_t new)
+void update_cycles(char *ctr, size_t *cycles, size_t *curr, size_t *capacity,
+                   size_t new)
 {
     if (*curr >= *capacity)
     {
@@ -11,7 +12,7 @@ void update_cycles(char *ctr, size_t *cycles, size_t *curr, size_t *capacity, si
         cycles = realloc(cycles, *capacity * sizeof(size_t));
     }
     size_t a = *curr % 40;
-    if (new-1 == a || new == a || new+1 == a)
+    if (new - 1 == a || new == a || new + 1 == a)
         ctr[*curr] = '#';
     else
         ctr[*curr] = '.';
@@ -22,7 +23,7 @@ void update_cycles(char *ctr, size_t *cycles, size_t *curr, size_t *capacity, si
 size_t calculate_sum(size_t *cycles, size_t capacity)
 {
     size_t res = 0;
-    for (size_t i = 19; i < capacity; i+=40)
+    for (size_t i = 19; i < capacity; i += 40)
     {
         res += (i + 1) * cycles[i];
     }
@@ -36,7 +37,7 @@ void print_ctr(char *ctr, size_t capacity)
         if (i % 40 == 0)
             printf("Cycle %lu -> ", i + 1);
         printf("%c", ctr[i]);
-        if ((i+1) % 40 == 0)
+        if ((i + 1) % 40 == 0)
             printf(" <- Cycle  %lu\n", i + 1);
     }
 }

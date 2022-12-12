@@ -64,7 +64,7 @@ int main(void)
             three = arr[i];
     }
     free(arr);
-    printf("res = %d\n", one+two+three);
+    printf("res = %d\n", one + two + three);
 
     return 0;
 }

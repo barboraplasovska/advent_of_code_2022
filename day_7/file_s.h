@@ -22,11 +22,11 @@ struct file_s
 
 struct file_s *file_s_init(char *name, enum file_type type);
 
-void file_s_add_child(struct file_s *f, enum file_type type,
-        char *name, size_t size);
+void file_s_add_child(struct file_s *f, enum file_type type, char *name,
+                      size_t size);
 
-void file_s_add_sibling(struct file_s *f, enum file_type type,
-        char *name, size_t size);
+void file_s_add_sibling(struct file_s *f, enum file_type type, char *name,
+                        size_t size);
 
 void file_s_destroy(struct file_s *f);
 

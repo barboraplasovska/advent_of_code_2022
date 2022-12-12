@@ -34,7 +34,6 @@ void create_dir(struct file_s *dir, char *line, size_t len)
     file_s_add_child(dir, DIR, name, 0);
 }
 
-
 void create_file(struct file_s *dir, char *line, size_t len)
 {
     size_t i = 0;
@@ -70,7 +69,7 @@ size_t calculate_dir_size(struct file_s *root)
         }
         return root->size;
     }
-    //if (root->type == FIL)
+    // if (root->type == FIL)
     return root->size;
 }
 
@@ -99,7 +98,6 @@ void save_sizes(struct file_s *root, size_t *dir_sizes, size_t *count)
 {
     if (!root || root->type != DIR)
         return;
-
 
     while (root)
     {
@@ -177,7 +175,7 @@ int main(int argc, char *argv[])
         }
     }
 
-//    file_s_print(0, root);
+    //    file_s_print(0, root);
 
     size_t totalsize = calculate_dir_size(root);
 
@@ -195,7 +193,7 @@ int main(int argc, char *argv[])
     save_sizes(child, dir_sizes, &c);
 
     printf("\nDIR SIZES ARRAY: %lu\n", count);
-    for (size_t i = 0; i < count; i ++)
+    for (size_t i = 0; i < count; i++)
         printf("%lu ", dir_sizes[i]);
     printf("\n");
     printf("total size = %lu\n", totalsize);
