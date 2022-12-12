@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c99 -fsanitize=address -g
 VPATH = src
 
 TARGET = main
-OBJS = main.o
+OBJS = main.o queue.o
 
 all: main
 
