@@ -8,9 +8,7 @@ int get_winner(int p1, int p2)
 {
     if (p1 == p2)
         return 2; // tie
-    if ((p1 == 1 && p2 == 3) ||
-        (p1 == 3 && p2 == 2) ||
-        (p1 == 2 && p2 == 1))
+    if ((p1 == 1 && p2 == 3) || (p1 == 3 && p2 == 2) || (p1 == 2 && p2 == 1))
         return 0; // p1 won
     return 1; // p2 won
 }
@@ -65,7 +63,6 @@ int get_exp(char p)
 
 int main(void)
 {
-
     FILE *f = fopen("input.txt", "r");
     if (!f)
         return 1;

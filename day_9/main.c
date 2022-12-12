@@ -52,13 +52,13 @@ void increase_capacity(struct map *m)
     size_t before = m->width;
     m->width *= 2;
     m->height *= 2;
-    m->arr = realloc(m->arr, m->height * sizeof(char*));
+    m->arr = realloc(m->arr, m->height * sizeof(char *));
     for (size_t i = 0; i < m->height; i++)
         m->arr[i] = realloc(m->arr[i], m->height * sizeof(char));
 
     for (size_t i = before; i < m->width; i++)
     {
-        for (size_t j =  before; j < m->width; j++)
+        for (size_t j = before; j < m->width; j++)
         {
             m->arr[i][j] = '.';
             m->visited[i][j] = 0;
@@ -140,16 +140,14 @@ void update_position(struct map *map, struct pos *p, size_t x, size_t y)
 // 8 - move diagonally down right
 int is_tail_far(struct pos *t, struct pos *h)
 {
-    if ((h->x == t->x && h->y == t->y) ||
-        (h->x == t->x && h->y == t->y + 1) ||
-        (h->x == t->x && h->y == t->y - 1) ||
-        (h->x == t->x + 1 && h->y == t->y) ||
-        (h->x == t->x - 1 && h->y == t->y) ||
-        (h->x == t->x - 1 && h->y == t->y - 1) ||
-        (h->x == t->x + 1 && h->y == t->y + 1) ||
-        (h->x == t->x + 1 && h->y == t->y - 1) ||
-        (h->x == t->x - 1 && h->y == t->y + 1)
-       )
+    if ((h->x == t->x && h->y == t->y) || (h->x == t->x && h->y == t->y + 1)
+        || (h->x == t->x && h->y == t->y - 1)
+        || (h->x == t->x + 1 && h->y == t->y)
+        || (h->x == t->x - 1 && h->y == t->y)
+        || (h->x == t->x - 1 && h->y == t->y - 1)
+        || (h->x == t->x + 1 && h->y == t->y + 1)
+        || (h->x == t->x + 1 && h->y == t->y - 1)
+        || (h->x == t->x - 1 && h->y == t->y + 1))
         return 0;
 
     if (h->x == t->x) // same column
@@ -172,7 +170,7 @@ int is_tail_far(struct pos *t, struct pos *h)
         return 7;
     }
     if (h->y > t->y)
-        return 6; //7;
+        return 6; // 7;
     return 5;
 }
 
@@ -180,12 +178,11 @@ void update_tail_pos(struct map *map, struct pos *t, struct pos *h)
 {
     for (size_t i = 0; i < 9; i++)
     {
-
         int m;
         if (i == 0)
             m = is_tail_far(&t[i], h);
         else
-            m = is_tail_far(&t[i], &t[i-1]);
+            m = is_tail_far(&t[i], &t[i - 1]);
 
         struct pos *p = &t[i];
 
@@ -295,8 +292,8 @@ int main(int argc, char *argv[])
 
     struct map *map = init_map(10000);
 
-    struct pos init = {99, 99, 's'}; // s
-    struct pos h = {99, 99, 'H'};
+    struct pos init = { 99, 99, 's' }; // s
+    struct pos h = { 99, 99, 'H' };
     struct pos *tail = calloc(9, sizeof(struct pos));
     for (int i = 0; i < 9; i++)
     {
@@ -308,17 +305,17 @@ int main(int argc, char *argv[])
 
     while (getline(&line, &len, f) != -1)
     {
-//        printf("\n----%s\n", line);
+        //        printf("\n----%s\n", line);
         move(line, map, tail, &h);
         update_points(map, init, tail);
-  //      print_map(map);
-    //    printf("\n");
+        //      print_map(map);
+        //    printf("\n");
     }
     free(line);
     fclose(f);
 
-    //print_map(map);
-    //print_visited(map);
+    // print_map(map);
+    // print_visited(map);
 
     printf("res = %lu\n", map->nb_visited + 1);
     free_matrix(map);

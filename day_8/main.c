@@ -15,7 +15,7 @@ void init_matrix(char *line, struct map *forest, size_t *curr)
     if (*curr >= forest->height)
     {
         forest->height += forest->width;
-        forest->arr = realloc(forest->arr, forest->height * sizeof(int*));
+        forest->arr = realloc(forest->arr, forest->height * sizeof(int *));
     }
     for (size_t i = 0; line[i] != '\n'; i++)
     {
@@ -67,8 +67,8 @@ int count_visible(struct map *forest)
         {
             int me = forest->arr[i][j];
 
-            if (i == 0 || i == forest->width - 1 ||
-                j == 0 || j == forest->width - 1)
+            if (i == 0 || i == forest->width - 1 || j == 0
+                || j == forest->width - 1)
             {
                 printf(". ");
                 continue;
@@ -81,8 +81,7 @@ int count_visible(struct map *forest)
             {
                 sum += 1;
                 k -= 1;
-            }
-            while (k - 1 >= 0 && forest->arr[k][j] < me);
+            } while (k - 1 >= 0 && forest->arr[k][j] < me);
 
             if (sum != 0)
                 visible *= sum;
@@ -93,8 +92,7 @@ int count_visible(struct map *forest)
             {
                 sum += 1;
                 a += 1;
-            }
-            while (a + 1< forest->width && forest->arr[a][j] < me);
+            } while (a + 1 < forest->width && forest->arr[a][j] < me);
 
             if (sum != 0)
                 visible *= sum;
@@ -105,8 +103,7 @@ int count_visible(struct map *forest)
             {
                 sum += 1;
                 k -= 1;
-            }
-            while (k - 1>= 0 && forest->arr[i][k] < me);
+            } while (k - 1 >= 0 && forest->arr[i][k] < me);
 
             if (sum != 0)
                 visible *= sum;
@@ -117,8 +114,7 @@ int count_visible(struct map *forest)
             {
                 sum += 1;
                 a += 1;
-            }
-            while (a + 1 < forest->width && forest->arr[i][a] < me);
+            } while (a + 1 < forest->width && forest->arr[i][a] < me);
 
             if (sum != 0)
                 visible *= sum;

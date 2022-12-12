@@ -14,13 +14,13 @@ enum op_type
 
 struct monkey
 {
-    struct stack *items;    // stack of items to inspect
-    long test_nb;            // divisible by X
+    struct stack *items; // stack of items to inspect
+    long test_nb; // divisible by X
     size_t test_true;
     size_t test_false;
-    long op_nb;              // operation number
-    enum op_type type;      // operation type
-    size_t inspected;       // nb items inspected
+    long op_nb; // operation number
+    enum op_type type; // operation type
+    size_t inspected; // nb items inspected
 };
 
 struct monkey *monkey_init(void);

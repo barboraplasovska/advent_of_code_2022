@@ -1,7 +1,7 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #include "stack.h"
 
@@ -22,8 +22,7 @@ void add_stacks(struct stack **stack_arr, char *line, size_t len)
         if (i >= len)
             break;
         size_t count = i / 4;
-        stack_arr[count] =
-            stack_push_back(stack_arr[count], line[i + 1]);
+        stack_arr[count] = stack_push_back(stack_arr[count], line[i + 1]);
         i += 1;
     }
 }
@@ -34,7 +33,7 @@ void move(struct stack **stack_arr, char *line)
     size_t start = i;
     while (line[i] != ' ')
         i += 1;
-    char *nb = strndup(line+start, i);
+    char *nb = strndup(line + start, i);
     int tomove = atoi(nb);
     free(nb);
 
@@ -42,7 +41,7 @@ void move(struct stack **stack_arr, char *line)
     start = i;
     while (line[i] != ' ')
         i += 1;
-    nb = strndup(line+start, i - start);
+    nb = strndup(line + start, i - start);
     int src = atoi(nb) - 1;
     free(nb);
 
@@ -50,7 +49,7 @@ void move(struct stack **stack_arr, char *line)
     start = i;
     while (isdigit(line[i]))
         i += 1;
-    nb = strndup(line+start, i - start);
+    nb = strndup(line + start, i - start);
     int dest = atoi(nb) - 1;
     free(nb);
 
@@ -104,7 +103,7 @@ int main(void)
             printf("adding\n");
             for (size_t i = 0; i < nb_stacks; i++)
             {
-                printf("%lu : ", i+1);
+                printf("%lu : ", i + 1);
                 stack_print(stack_arr[i]);
             }
             printf("\n");
@@ -115,7 +114,7 @@ int main(void)
             printf("%s", line);
             for (size_t i = 0; i < nb_stacks; i++)
             {
-                printf("%lu : ", i+1);
+                printf("%lu : ", i + 1);
                 stack_print(stack_arr[i]);
             }
             printf("\n");
@@ -125,7 +124,7 @@ int main(void)
     printf("nb stacks: %lu\n", nb_stacks);
     for (size_t i = 0; i < nb_stacks; i++)
     {
-        printf("%lu : ", i+1);
+        printf("%lu : ", i + 1);
         stack_print(stack_arr[i]);
     }
 

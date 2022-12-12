@@ -47,8 +47,8 @@ struct map *init_map(size_t size)
     return m;
 }
 
-void add_to_map(char *line, struct map *map, size_t *curr,
-        struct pos *s, struct pos *e)
+void add_to_map(char *line, struct map *map, size_t *curr, struct pos *s,
+                struct pos *e)
 {
     for (size_t i = 0; line[i] != '\n'; i++)
     {
@@ -105,100 +105,85 @@ int is_reachable(struct map *map, size_t x, size_t y, struct pos *cp)
 void move_right(struct map *map, struct pos *cp)
 {
     map->nb_steps += 1;
-    map->visited[cp->x][cp->y] ='>';
+    map->visited[cp->x][cp->y] = '>';
     cp->y += 1;
 }
 
 void move_left(struct map *map, struct pos *cp)
 {
     map->nb_steps += 1;
-    map->visited[cp->x][cp->y] ='<';
+    map->visited[cp->x][cp->y] = '<';
     cp->y -= 1;
 }
 
 void move_up(struct map *map, struct pos *cp)
 {
     map->nb_steps += 1;
-    map->visited[cp->x][cp->y] ='^';
+    map->visited[cp->x][cp->y] = '^';
     cp->x -= 1;
 }
 
 void move_down(struct map *map, struct pos *cp)
 {
     map->nb_steps += 1;
-    map->visited[cp->x][cp->y] ='v';
+    map->visited[cp->x][cp->y] = 'v';
     cp->x += 1;
 }
 
-void move(struct map *map, struct pos *e,
-        struct pos *cp)
+void move(struct map *map, struct pos *e, struct pos *cp)
 {
     if (cp->x == e->x && cp->y == e->y)
         return;
 
     if (cp->x == e->x)
     {
-        if (e->y < cp->y &&
-                is_reachable(map, cp->x, cp->y - 1, cp)){
-
-            move_left(map, cp);
-    move(map, e, cp);
-        }
-        else if (e->y > cp->y &&
-                is_reachable(map, cp->x, cp->y + 1, cp))
+        if (e->y < cp->y && is_reachable(map, cp->x, cp->y - 1, cp))
         {
-
+            move_left(map, cp);
+            move(map, e, cp);
+        }
+        else if (e->y > cp->y && is_reachable(map, cp->x, cp->y + 1, cp))
+        {
             move_right(map, cp);
-    move(map, e, cp);
+            move(map, e, cp);
         }
     }
     else if (cp->y == e->y)
     {
-        if (e->x > cp->x &&
-                is_reachable(map, cp->x + 1, cp->y, cp)){
-
-            move_down(map, cp);
-    move(map, e, cp);
-        }
-        else if (e->x < cp->x &&
-                is_reachable(map, cp->x - 1, cp->y, cp))
+        if (e->x > cp->x && is_reachable(map, cp->x + 1, cp->y, cp))
         {
-
+            move_down(map, cp);
+            move(map, e, cp);
+        }
+        else if (e->x < cp->x && is_reachable(map, cp->x - 1, cp->y, cp))
+        {
             move_up(map, cp);
-    move(map, e, cp);
+            move(map, e, cp);
         }
     }
-    else if (e->x > cp->x &&
-                is_reachable(map, cp->x + 1, cp->y, cp))
+    else if (e->x > cp->x && is_reachable(map, cp->x + 1, cp->y, cp))
     {
-
-            move_down(map, cp);
-    move(map, e, cp);
+        move_down(map, cp);
+        move(map, e, cp);
     }
-    else if (e->x < cp->x &&
-                is_reachable(map, cp->x - 1, cp->y, cp))
+    else if (e->x < cp->x && is_reachable(map, cp->x - 1, cp->y, cp))
     {
-
-            move_up(map, cp);
-    move(map, e, cp);
+        move_up(map, cp);
+        move(map, e, cp);
     }
-    else if (e->y > cp->y &&
-                is_reachable(map, cp->x, cp->y + 1, cp))
+    else if (e->y > cp->y && is_reachable(map, cp->x, cp->y + 1, cp))
     {
-
-            move_right(map, cp);
-    move(map, e, cp);
+        move_right(map, cp);
+        move(map, e, cp);
     }
-    else if (e->y < cp->y &&
-            is_reachable(map, cp->x, cp->y - 1, cp))
+    else if (e->y < cp->y && is_reachable(map, cp->x, cp->y - 1, cp))
     {
-            move_left(map, cp);
-            move(map, e, cp);
+        move_left(map, cp);
+        move(map, e, cp);
     }
 
     move(map, e, cp);
 }
-
 
 int main(int argc, char *argv[])
 {

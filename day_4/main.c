@@ -39,7 +39,7 @@ int main(void)
         while (i < len && line[i] != ',')
             i += 1;
 
-        nb1 = strndup(line+start, i - start);
+        nb1 = strndup(line + start, i - start);
         int b1 = atoi(nb1);
         free(nb1);
 
@@ -48,7 +48,7 @@ int main(void)
         while (i < len && line[i] != '-')
             i += 1;
 
-        nb1 = strndup(line+start, i - start);
+        nb1 = strndup(line + start, i - start);
         int a2 = atoi(nb1);
         free(nb1);
 
@@ -57,7 +57,7 @@ int main(void)
         while (i < len && line[i] != ',')
             i += 1;
 
-        nb1 = strndup(line+start, i - start);
+        nb1 = strndup(line + start, i - start);
         int b2 = atoi(nb1);
         free(nb1);
 
