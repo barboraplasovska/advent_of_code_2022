@@ -10,8 +10,8 @@ struct list *list_init()
     new->size = 0;
     new->capacity = 8;
     new->data = calloc(8, sizeof(char *));
-   // for (size_t i = 0; i < new->capacity; i++)
-     //   new->data[i] = calloc(3, sizeof(char));
+    // for (size_t i = 0; i < new->capacity; i++)
+    //   new->data[i] = calloc(3, sizeof(char));
 
     return new;
 }

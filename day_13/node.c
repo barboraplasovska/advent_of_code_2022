@@ -1,6 +1,6 @@
 #include "node.h"
 
-#define  _GNU_SOURCE
+#define _GNU_SOURCE
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -84,14 +84,12 @@ void list_destroy(struct list *list)
     free(list);
 }
 
-
 void list_print_packets(struct list *list)
 {
     struct node *p = list->head;
     for (size_t i = 0; i < list->size; i++)
     {
-        if (strcmp(p->packet, "[[2]]") == 0 ||
-            strcmp(p->packet, "[[6]]") == 0)
+        if (strcmp(p->packet, "[[2]]") == 0 || strcmp(p->packet, "[[6]]") == 0)
             printf("%03lu: %s     <=======\n", i + 1, p->packet);
         else
             printf("%03lu: %s\n", i + 1, p->packet);

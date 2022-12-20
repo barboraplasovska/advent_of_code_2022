@@ -1,8 +1,8 @@
 #define _GNU_SOURCE
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #include "list.h"
 
@@ -85,7 +85,7 @@ long calculate_distance(struct list *list, int row)
     for (long x = min; x <= max; x++)
     {
         int find = 0;
-        for (struct list *p = list; p; p=p->next)
+        for (struct list *p = list; p; p = p->next)
         {
             if (myabs(x - p->s->x) + myabs(row - p->s->y) <= p->dist)
                 find = 1;
@@ -193,7 +193,7 @@ void part_two(char *path)
 
     long res = get_frequency(list, maxrow);
 
-    //printf("part two res: %lu\n", res);
+    // printf("part two res: %lu\n", res);
 
     list_destroy(list);
 
@@ -209,5 +209,5 @@ int main(int argc, char *argv[])
         return 1;
     }
     part_one(argv[1]);
-    //part_two(argv[1]);
+    // part_two(argv[1]);
 }

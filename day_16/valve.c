@@ -1,9 +1,9 @@
 #include "valve.h"
 
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 struct valve *valve_init(char *name, int flow_rate)
 {

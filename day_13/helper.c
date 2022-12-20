@@ -1,10 +1,10 @@
 #include "helper.h"
 
-#define  _GNU_SOURCE
+#define _GNU_SOURCE
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #include "node.h"
 
@@ -207,7 +207,8 @@ int compare_nodes(struct node *one, struct node *two)
         if (l_list && r_list)
         {
             int res = compare_lists(&i, &j);
-            if (res != 1) {
+            if (res != 1)
+            {
                 free(right);
                 free(left);
                 return res;
@@ -224,7 +225,8 @@ int compare_nodes(struct node *one, struct node *two)
         else
         {
             int res = compare_values(&i, &j);
-            if (res != 1) {
+            if (res != 1)
+            {
                 free(right);
                 free(left);
                 return res;

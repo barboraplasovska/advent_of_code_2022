@@ -1,12 +1,12 @@
 #define _GNU_SOURCE
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include <time.h>
 
-#include "valve.h"
 #include "list.h"
+#include "valve.h"
 
 int parse_number(char *str, size_t *i)
 {
@@ -43,7 +43,7 @@ void parse_line(struct valve **valves, char *line)
     while (line[i] != '\n')
     {
         new->tunnel[new->nb_valves++] = strndup(line + i, 2);
-        if (line[i+2] == '\n')
+        if (line[i + 2] == '\n')
             break;
         i += 4;
     }
@@ -80,7 +80,6 @@ int **fill_paths(struct valve *valves, size_t *len)
             struct valve *t = valve_get(valves, p->tunnel[i]);
             res[p->ind][t->ind] = 1;
         }
-
     }
     for (struct valve *p = valves; p; p = p->next)
     {
@@ -88,9 +87,10 @@ int **fill_paths(struct valve *valves, size_t *len)
         {
             for (struct valve *to = valves; to; to = to->next)
             {
-                if (res[from->ind][to->ind] >
-                        res[from->ind][p->ind] + res[p->ind][to->ind])
-                    res[from->ind][to->ind] = res[from->ind][p->ind] + res[p->ind][to->ind];
+                if (res[from->ind][to->ind]
+                    > res[from->ind][p->ind] + res[p->ind][to->ind])
+                    res[from->ind][to->ind] =
+                        res[from->ind][p->ind] + res[p->ind][to->ind];
             }
         }
     }
@@ -109,7 +109,8 @@ int get_flow(struct valve *valves)
     return res;
 }
 
-int dfs(int **dist, struct valve *valves, struct valve *curr, int min, int total)
+int dfs(int **dist, struct valve *valves, struct valve *curr, int min,
+        int total)
 {
     int max = total + (30 - min) * get_flow(valves);
 
@@ -148,7 +149,8 @@ int get_flow_open(struct list *open, struct valve *valves)
     return res;
 }
 
-int dfs_el(int el, int **dist, struct valve *valves, struct valve *curr, int min, int total, struct list *open, struct list *useful)
+int dfs_el(int el, int **dist, struct valve *valves, struct valve *curr,
+           int min, int total, struct list *open, struct list *useful)
 {
     int max = total + (26 - min) * get_flow_open(open, valves);
 
@@ -164,7 +166,8 @@ int dfs_el(int el, int **dist, struct valve *valves, struct valve *curr, int min
 
         struct list *new_open = list_init();
 
-        int max_el = dfs_el(1, dist, valves, valve_get(valves, "AA"), 0, 0, new_open, new_useful);
+        int max_el = dfs_el(1, dist, valves, valve_get(valves, "AA"), 0, 0,
+                            new_open, new_useful);
         max = total + (26 - min) * get_flow_open(open, valves) + max_el;
 
         list_destroy(new_useful);
@@ -188,7 +191,8 @@ int dfs_el(int el, int **dist, struct valve *valves, struct valve *curr, int min
         list_add(open, v->name);
         v->open = 1;
 
-        int value = dfs_el(el, dist, valves, v, min + delta, new_total, open, useful);
+        int value =
+            dfs_el(el, dist, valves, v, min + delta, new_total, open, useful);
         if (max < value)
             max = value;
         v->open = 0;
@@ -205,7 +209,7 @@ void part_one(int **dist, struct valve *valves)
     printf("part one res = %d\n", res);
 }
 
-void part_two(int **dist,struct valve *valves)
+void part_two(int **dist, struct valve *valves)
 {
     struct list *open = list_init();
     struct list *useful = list_init();
@@ -260,7 +264,6 @@ int main(int argc, char *argv[])
     part_two(dist, valves);
     end = clock();
     printf("time taken: %fs\n", ((double)(end - start)) / CLOCKS_PER_SEC);
-
 
     for (size_t i = 0; i < len; i++)
         free(dist[i]);

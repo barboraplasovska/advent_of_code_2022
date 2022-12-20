@@ -17,7 +17,8 @@ struct list *list_init(struct pos *b, struct pos *s, long dist)
     return l;
 }
 
-struct list *list_add(struct list *list, struct pos *b, struct pos *s, long dist)
+struct list *list_add(struct list *list, struct pos *b, struct pos *s,
+                      long dist)
 {
     struct list *new = list_init(b, s, dist);
     if (!list)
@@ -26,7 +27,8 @@ struct list *list_add(struct list *list, struct pos *b, struct pos *s, long dist
     return new;
 }
 
-struct list *list_push_back(struct list *list, struct pos *b, struct pos *s, long dist)
+struct list *list_push_back(struct list *list, struct pos *b, struct pos *s,
+                            long dist)
 {
     struct list *new = list_init(b, s, dist);
     if (!list)
